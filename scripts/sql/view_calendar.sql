@@ -35,7 +35,7 @@ month_table as (
 
 base_dates as (
 	select 
-		cast("date" as date) as "date",
+		try_convert(date, "date", 23) as "date",
 		year, leap_year, month, month_name, quarter, day,
 		iif(try_convert(date, "date", 23) is not null, 1, 0) as date_is_valid
 	from (

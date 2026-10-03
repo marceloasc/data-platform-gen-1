@@ -111,6 +111,8 @@ A origem que alimentará o dashboard deverá disponibilizar, no mínimo:
 ### Território
 
 -   `SalesTerritory.Name` como `TerritoryName`
+-   `SalesTerritory.CountryRegionCode` como `CountryRegionCode`
+-   `SalesTerritory.Group` como `TerritoryGroup`
 
 ### Calendário
 
@@ -136,18 +138,6 @@ COUNT(DISTINCT SalesOrderID)
 
 ``` text
 SUM(OrderQty)
-```
-
-### Ticket médio
-
-``` text
-SUM(LineTotal) / COUNT(DISTINCT SalesOrderID)
-```
-
-### Clientes que compraram
-
-``` text
-COUNT(DISTINCT CustomerID)
 ```
 
 ### Produtos vendidos
@@ -193,14 +183,14 @@ Limite = 10
 
 ### Faturamento por território
 
-**Visualização:** gráfico de barras.
+**Visualização:** mapa.
 
 ``` text
-Território = SalesTerritory.Name
+Localização = SalesTerritory.Name / CountryRegionCode
 Métrica = SUM(LineTotal)
 ```
 
-O território deverá ser obtido por `SalesOrderHeader.TerritoryID`.
+O mapa deverá representar geograficamente os territórios de venda e utilizar o faturamento como medida de intensidade. O território deverá ser obtido por `SalesOrderHeader.TerritoryID`, relacionado a `Sales.SalesTerritory`. Os campos `CountryRegionCode` e `TerritoryGroup` deverão estar disponíveis para apoiar a identificação geográfica e a configuração do mapa.
 
 ### Faturamento por vendedor
 
@@ -234,23 +224,28 @@ Todos os filtros devem atualizar os KPIs e as visualizações aplicáveis.
 
 ## 7. Organização da aba
 
+A organização deverá priorizar duas visualizações de maior destaque: **Evolução do faturamento** e **Faturamento por território**. Ambas deverão ocupar toda a largura disponível da área de visualizações.
+
+Abaixo do mapa, as visualizações **Faturamento por categoria**, **Top 10 produtos** e **Faturamento por vendedor** deverão ser dispostas lado a lado, alinhadas horizontalmente e com dimensões equivalentes.
+
 ``` text
-┌─────────────────────────────────────────────────────────────────┐
-│                  DASHBOARD DA OPERAÇÃO                        │
-├─────────────────────────────────────────────────────────────────┤
-│ Ano | Mês | Território | Categoria | Subcategoria | Vendedor   │
-├───────────┬──────────┬───────────┬───────────┬─────────────────┤
-│Faturamento│ Pedidos  │Itens vend.│Ticket médio│Clientes ativos │
-├───────────┴──────────┴───────────┴───────────┴─────────────────┤
-│                 EVOLUÇÃO DO FATURAMENTO                         │
-│                       Linha                                     │
-├───────────────────────────────┬─────────────────────────────────┤
-│ FATURAMENTO POR CATEGORIA     │ TOP 10 PRODUTOS                 │
-│ Barras                        │ Barras horizontais              │
-├───────────────────────────────┼─────────────────────────────────┤
-│ FATURAMENTO POR TERRITÓRIO    │ FATURAMENTO POR VENDEDOR        │
-│ Barras                        │ Barras horizontais              │
-└───────────────────────────────┴─────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         DASHBOARD DA OPERAÇÃO                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Ano | Mês | Território | Categoria | Subcategoria | Vendedor               │
+├───────────────────────┬───────────────────────┬─────────────────────────────┤
+│     Faturamento       │        Pedidos        │       Itens vendidos        │
+├───────────────────────┴───────────────────────┴─────────────────────────────┤
+│                         EVOLUÇÃO DO FATURAMENTO                            │
+│                              Linha                                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                       FATURAMENTO POR TERRITÓRIO                           │
+│                               Mapa                                         │
+├─────────────────────────┬─────────────────────────┬─────────────────────────┤
+│ FATURAMENTO POR         │ TOP 10 PRODUTOS         │ FATURAMENTO POR         │
+│ CATEGORIA               │                         │ VENDEDOR                │
+│ Barras                  │ Barras horizontais      │ Barras horizontais      │
+└─────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
 
 ------------------------------------------------------------------------
